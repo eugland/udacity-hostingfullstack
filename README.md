@@ -3,7 +3,7 @@
 This project is part of the Udacity FullStack JavaScript nanodegree. The code was given as a starter project and the task was to employ and adapt the code to get it working and hosted on AWS.
 
 
-See additional documentation in the documentation folder.
+See additional documentation in the documentation folder. The running site is at http://ugramfront.s3-website-us-east-1.amazonaws.com/
 
 ## Configuration Screenshots
 
