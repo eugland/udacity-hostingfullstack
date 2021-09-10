@@ -1,8 +1,3 @@
-# Pipeline Process
-
-The pipeline is setup on CircleCI.
-
-## Order of commands
 Stage 1 prepare environment:
  - download and install node
  - npm
