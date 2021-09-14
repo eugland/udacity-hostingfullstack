@@ -5,6 +5,27 @@ This project is part of the Udacity FullStack JavaScript nanodegree. The code wa
 
 See additional documentation in the documentation folder. The running site is at http://ugramfront.s3-website-us-east-1.amazonaws.com/
 
+You are welcome to use the following user / admin login 
+or register yourself: 
+| Username      | password | function
+| ----------- | ----------- | ---- |
+| user@corp.com      | user       | shopping |
+| admin@corp.com   | admin        | stocking |
+
+## App walk through
+main
+![](./documentation/walkthrough/0-home.png)
+login
+![](./documentation/walkthrough/1-log.png)
+shopping list
+![](./documentation/walkthrough/2-shopping.png)
+shopping kart
+![](./documentation/walkthrough/3-kart.png)
+admin stock management
+![](./documentation/walkthrough/4-adminpro.png)
+admin user management
+![](./documentation/walkthrough/5-adminuse.png)
+
 ## Configuration Screenshots
 
 ### Elastic Beanstalk Environment
