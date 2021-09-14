@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "echo `success, nothing to build, its a JS application ;)` ",
     "start": "npm install && node index.js",
     "server": "nodemon backend",
     "test": "echo \"Error: no test specified\" && exit 1"
