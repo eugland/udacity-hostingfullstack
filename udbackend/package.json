@@ -7,7 +7,8 @@
     "build": "echo `success, nothing to build, its a JS application ;)` ",
     "start": "npm install && node index.js",
     "server": "nodemon backend",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "eb use Back-env --profile default && eb deploy --profile default && eb setenv AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_BUCKET=$AWS_BUCKET AWS_REGION=$AWS_DEFAULT_REGION SECRET_ACCESS_KEY_ID=$AWS_SECRET_ACCESS_KEY JWT_SECRET=$JWT_SECRET POSTGRES_DB=$POSTGRES_DB POSTGRES_HOST=$POSTGRES_HOST POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_PORT=$POSTGRES_PORT POSTGRES_USERNAME=$POSTGRES_USERNAME --profile default"
   },
   "keywords": [],
   "author": "",
