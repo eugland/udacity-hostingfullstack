@@ -1,0 +1,91 @@
+<mat-toolbar>
+    <span>myStore</span>
+    <span>
+
+        <span class="navbarItem">
+            <span class="userName">
+                <img class="user" [src]="profilePicture" width="70" height="70" />
+                {{ this.loggedInUser$.email}}
+            </span>
+        </span>
+
+        <span class="navbarItem">
+            <span class="menuWrapper">
+                <button mat-button [matMenuTriggerFor]="menu" class="navbarMenu">
+                    <mat-icon>menu</mat-icon>
+                    Menu
+                </button>
+
+                <mat-menu #menu="matMenu">
+
+                    <button mat-menu-item routerLink="/user">
+                        <mat-icon>account_circle</mat-icon>
+                        User Profile
+                    </button>
+                    <button mat-menu-item routerLink="/shop">
+                        <mat-icon>add_shopping_cart</mat-icon>
+                        Shop
+                    </button>
+                    <button mat-menu-item routerLink="/cart">
+                        <mat-icon>shopping_cart</mat-icon>
+                        Cart
+                    </button>
+
+                    <button mat-menu-item (click)="deleteSessionUserInfo()" routerLink="/login">
+                        <mat-icon>power_settings_new</mat-icon>
+                        Log out
+                    </button>
+                </mat-menu>
+            </span>
+        </span>
+    </span>
+</mat-toolbar>
+
+<div class="centerDiv">
+    <h1>User Dashboard</h1>
+    <h3>Welcome to your profile, {{this.loggedInUser$.email}}</h3>
+    <p>View and edit your information below </p>
+</div>
+
+<form [formGroup]="updateUserForm" (ngSubmit)="update()" novalidate class="centerForm">
+    <div class="flex-container">
+
+        <div class="left">
+            <mat-form-field class="inputField-med">
+                <mat-label>User ID</mat-label>
+                <input #idInp matInput formControlName="id" />
+            </mat-form-field>
+
+            <mat-form-field class="inputField-med">
+                <mat-label>Email</mat-label>
+                <input #emailInp matInput formControlName="email" />
+            </mat-form-field>
+
+            <mat-form-field class="inputField-med">
+                <mat-label>Password</mat-label>
+                <input #pwInp matInput formControlName="password" />
+            </mat-form-field>
+
+            <mat-radio-group formControlName="role" disabled>
+                <mat-radio-button value="admin" checked>Admin</mat-radio-button>
+                <mat-radio-button value="user">User</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="right">
+            <h5 style="text-align: left;">Change profile picture</h5>
+            <img class="product" [src]="profilePicture" width="70" height="70" style="margin:auto" />
+            <br />
+            <input #fileInp class="file-upload" type="file" (change)="onFileChange($event)">
+        </div>
+    </div>
+
+    <span>
+        <button class="adminBtn" type="submit">
+            <span>Update user</span>
+        </button>
+
+        <button class="deleteBtn" (click)="delete()">
+            Delete
+        </button>
+    </span>
+</form>

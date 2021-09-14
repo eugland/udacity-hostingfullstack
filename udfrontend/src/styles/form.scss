@@ -1,0 +1,39 @@
+.formContainer {
+    width: 100%;
+}
+
+.centerForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.inputField {
+    width: 50%;
+
+    &-sm {
+        width: 30%;
+    }
+
+    &-med {
+        display: block !important;
+    }
+}
+
+mat-radio-button {
+    margin: 20px !important;
+}
+
+@mixin validationStyle ($status) {
+    color: $status;
+    text-align: center;
+}
+
+.error {
+    @include validationStyle($error-color);
+}
+
+.success {
+    @include validationStyle($success-color);
+}

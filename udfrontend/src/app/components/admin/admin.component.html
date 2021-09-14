@@ -1,0 +1,263 @@
+<mat-toolbar>
+    <span>myStore</span>
+    <span>
+
+        <span class="navbarItem">
+
+            <span class="userName">
+                <img class="user" [src]="profilePicture" width="70" height="70" />
+                {{this.currAdmin$.email}}
+            </span>
+
+        </span>
+
+        <span class="navbarItem">
+
+            <span class="menuWrapper">
+                <button mat-button [matMenuTriggerFor]="menu" class="navbarMenu">
+                    <mat-icon>menu</mat-icon>
+                    Menu
+                </button>
+
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item routerLink="/admin">
+                        <mat-icon>dashboard</mat-icon>
+                        Dashboard
+                    </button>
+
+                    <button mat-menu-item routerLink="/adminprofile">
+                        <mat-icon>account_circle</mat-icon>
+                        Admin Profile
+                    </button>
+
+                    <button mat-menu-item (click)="deleteSessionUserInfo()" routerLink="/login">
+                        <mat-icon>power_settings_new</mat-icon>
+                        Log out
+                    </button>
+                </mat-menu>
+            </span>
+        </span>
+    </span>
+</mat-toolbar>
+
+<h1>Admin Dashboard</h1>
+<h3>Welcome, {{this.currAdmin$.email}} . What would you like to do today?</h3>
+
+<button (click)="displayDivfunc('showProducts')" class="adminBtn">
+    Show/Hide Inventory
+</button>
+
+<button (click)="displayDivfunc('showUser')" class="adminBtn">
+    Show/Hide User List
+</button>
+
+<button (click)="displayDivfunc('addUser')" class="adminBtn">
+    Add New User
+</button>
+
+<button (click)="displayDivfunc('addProduct')" class="adminBtn">
+    Add New Product
+</button>
+
+<div class="formContainer">
+    <form [formGroup]="newUserForm" (ngSubmit)="post()" novalidate *ngIf="addUser" class="centerForm">
+        <h1>Add a New User:</h1>
+
+        <mat-form-field class="inputField-sm">
+            <mat-label>Email</mat-label>
+            <input #emailInp matInput placeholder="example@gmail.com" formControlName="email" />
+        </mat-form-field>
+
+        <mat-form-field class="inputField-sm">
+            <mat-label>Password</mat-label>
+            <input #pwInp matInput placeholder="password" formControlName="password" />
+        </mat-form-field>
+
+        <mat-radio-group #roleInp aria-label="Select an option" formControlName="role">
+            <mat-radio-button value="admin">Admin</mat-radio-button>
+            <mat-radio-button value="user">User</mat-radio-button>
+        </mat-radio-group>
+        <!-- <mat-form-field class="inputField-sm">
+        <mat-label>Role</mat-label>
+        <input #roleInp matInput placeholder="user or admin" formControlName="role" />
+    </mat-form-field> -->
+
+        <button class="adminBtn" type="submit">
+            Add user
+        </button>
+
+        <div class="error">
+            <div #unsuccessPost *ngIf="div1">
+                Invalid Inputs! Try Again!
+            </div>
+        </div>
+
+        <div class="success">
+            <div #successPost *ngIf="div2">
+                You have successfully created the new user!
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="showProducts">
+
+    <h1>Products List</h1>
+
+    <div class="wrapTable">
+
+        <!-- TO DO
+            headings
+            table row content
+        -->
+        <table class="basicTable">
+            <thead>
+                <tr>
+                    <th>Product Id</th>
+                    <th>Product Picture</th>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>View</th>
+                </tr>
+            </thead>
+            <tr *ngFor="let product of products$ | async">
+                <td>{{product.pid}}</td>
+                <td><img class="product" [src]="product.picture" width="70" height="70" /></td>
+                <td>{{product.product_name}}</td>
+                <td>{{product.description}}</td>
+                <td>${{product.price.toFixed(2)}}</td>
+                <td><button mat-icon-button color="primary">
+                        <mat-icon (click)="toggleUpdateProduct(product)">edit
+                        </mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="primary">
+                        <mat-icon (click)="deteleProductDialog(product.pid)">
+                            delete_forever
+                        </mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<div *ngIf="showUser">
+    <h1>User List</h1>
+
+    <div class="wrapTable">
+
+        <table class="basicTable">
+            <thead>
+                <tr>
+                    <th>User Id</th>
+                    <th>User Picture</th>
+                    <th>User Email</th>
+                    <th>Role</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+
+            <tr *ngFor="let user of users$ | async">
+                <td>{{user.id}}</td>
+                <td><img class="user" [src]="user.picture" width="70" height="70" /></td>
+                <td>{{user.email}}</td>
+                <td>{{user.role}}</td>
+                <td><button mat-icon-button color="warn">
+                        <mat-icon (click)="delete(user.id)">delete</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+<form [formGroup]="newProductForm" (ngSubmit)="postProduct()" novalidate *ngIf="addProduct" class="centerForm">
+    <h1>Add a New Product:</h1>
+
+    <mat-form-field class="inputField-sm">
+        <mat-label>Product Name</mat-label>
+        <input #nameInp matInput placeholder="Name" formControlName="product_name" />
+    </mat-form-field>
+
+    <mat-form-field class="inputField-sm">
+        <mat-label>Description</mat-label>
+        <input #descInp matInput placeholder="Describe the product" formControlName="description" />
+    </mat-form-field>
+
+    <mat-form-field class="inputField-sm">
+        <mat-label>Price</mat-label>
+        <input #priceInp matInput type="number" placeholder="$0.00" formControlName="price" />
+    </mat-form-field>
+
+
+    <input #fileInp class="file-upload" type="file" (change)="onFileChange($event)">
+    <br>
+
+
+    <button class=" adminBtn" type="submit">
+        Add Product
+    </button>
+
+    <div class="error">
+        <div #unsuccessPost *ngIf="div1">
+            Invalid Inputs! Try Again!
+        </div>
+    </div>
+
+    <div class="success">
+        <div #successPost *ngIf="div2">
+            You have successfully created the new user!
+        </div>
+    </div>
+
+</form>
+
+<form [formGroup]="updateProductForm" (ngSubmit)="editProduct()" novalidate *ngIf="updateProduct" class="centerForm">
+    <h1>Update Product</h1>
+
+    <mat-form-field class="inputField-sm">
+        <mat-label>Product Name</mat-label>
+        <input #nameInp matInput placeholder="Name" value={{productToUpdate.product_name}}
+            formControlName="product_name" />
+    </mat-form-field>
+
+    <mat-form-field class="inputField-sm">
+        <mat-label>Description</mat-label>
+        <input #descInp matInput placeholder="Describe the product" value={{productToUpdate.description}}
+            formControlName="description" />
+    </mat-form-field>
+
+    <mat-form-field class="inputField-sm">
+        <mat-label>Price</mat-label>
+        <input #priceInp matInput type="number" placeholder="$0.00" value={{productToUpdate.price}}
+            formControlName="price" />
+    </mat-form-field>
+
+    <img class="product" [src]="productToUpdate.picture" width="150" height="150"
+        style="margin:auto;margin-bottom: 10px;" />
+    <input #fileInp class="file-upload" type="file" (change)="onProductFileChange($event)" style="margin-left: 50px;">
+    <br>
+
+
+    <button class=" adminBtn" type="submit">
+        Update Product
+    </button>
+
+    <div class="error">
+        <div #unsuccessPost *ngIf="div1">
+            Invalid Inputs! Try Again!
+        </div>
+    </div>
+
+    <div class="success">
+        <div #successPost *ngIf="div2">
+            You have successfully created the new user!
+        </div>
+    </div>
+
+</form>
